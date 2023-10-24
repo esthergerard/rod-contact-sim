@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.11)
 project(flagellaBundling)
 
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_BUILD_TYPE Release)
+# set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_FLAGS "-Wno-deprecated-declarations -fopenmp")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "../")
