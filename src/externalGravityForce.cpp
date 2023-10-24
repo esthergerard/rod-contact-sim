@@ -16,7 +16,7 @@ externalGravityForce::~externalGravityForce()
 
 void externalGravityForce::computeFg()
 {
-	for (int i=0; i < rod->ndof; i++)
+	for (int i = 0; i < rod->ndof; i++)
 	{
 		stepper->addForce(i, -massGravity[i], rod_idx); // subtracting gravity force
 	}
@@ -30,11 +30,11 @@ void externalGravityForce::computeJg()
 void externalGravityForce::setGravity()
 {
 	massGravity = VectorXd::Zero(rod->ndof);
-	for (int i=0; i < rod->nv; i++)
+	for (int i = 0; i < rod->nv; i++)
 	{
-		for (int k=0; k < 3; k++)
+		for (int k = 0; k < 3; k++)
 		{
-			int ind = 4*i + k;
+			int ind = 4 * i + k;
 			massGravity[ind] = gVector[k] * rod->massArray[ind];
 		}
 	}

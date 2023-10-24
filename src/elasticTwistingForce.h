@@ -8,25 +8,24 @@
 class elasticTwistingForce
 {
 public:
-	elasticTwistingForce(elasticRod &m_rod, timeStepper &m_stepper, int idx);
-	~elasticTwistingForce();
-	void computeFt();
-	void computeJt();
+    elasticTwistingForce(elasticRod &m_rod, timeStepper &m_stepper, int idx);
+    ~elasticTwistingForce();
+    void computeFt();
+    void computeJt();
 
     VectorXd ForceVec;
 
 private:
-
-	elasticRod *rod;
-	timeStepper *stepper;
+    elasticRod *rod;
+    timeStepper *stepper;
 
     int ci, ind, ind1, ind2;
-    double norm_e,norm_f;
-    double norm2_e,norm2_f;
-    double value,chi,milen;
+    double norm_e, norm_f;
+    double norm2_e, norm2_f;
+    double value, chi, milen;
 
-    Vector3d t0,t1;
-    Vector3d te,tf;
+    Vector3d t0, t1;
+    Vector3d te, tf;
     Vector3d kbLocal;
     Vector3d tilde_t;
     VectorXd theta_f;
@@ -36,16 +35,16 @@ private:
     VectorXd getUndeformedTwist;
     VectorXd f;
 
-    Matrix3d D2mDe2,D2mDf2,D2mDeDf,D2mDfDe;
+    Matrix3d D2mDe2, D2mDf2, D2mDeDf, D2mDfDe;
     Matrix3d teMatrix;
-    Matrix<double,11,11> J;
-    Matrix<double,11,11> DDtwist;
-    Matrix<double,11,11> Jtt;
+    Matrix<double, 11, 11> J;
+    Matrix<double, 11, 11> DDtwist;
+    Matrix<double, 11, 11> Jtt;
     MatrixXd gradTwist;
     double GJ;
-		int rod_idx;
+    int rod_idx;
 
-	void crossMat(const Vector3d &a,Matrix3d &b);
+    void crossMat(const Vector3d &a, Matrix3d &b);
 };
 
 #endif

@@ -19,9 +19,9 @@ private:
 	elasticRod *rod;
 	timeStepper *stepper;
 
-    int ind1, ind2, mappedInd1, mappedInd2;
-    double f, jac;
-		int rod_idx;
+	int ind1, ind2, mappedInd1, mappedInd2;
+	double f, jac;
+	int rod_idx;
 };
 
 #endif

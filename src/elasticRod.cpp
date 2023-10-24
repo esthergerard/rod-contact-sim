@@ -17,8 +17,8 @@ elasticRod::elasticRod(MatrixXd initialNodes, MatrixXd undeformed,
 	rodRadius = m_rodRadius;
 
     isConstrained = new int[ndof];
-    for (int i=0; i < ndof; i++)
-		isConstrained[i] = 0;
+    for (int i=0; i < ndof; i++){
+		isConstrained[i] = 0;}
 
 	x = VectorXd(ndof);
 	for (int i=0; i < nv; i++)
@@ -174,6 +174,7 @@ void elasticRod::setReferenceLength()
 		else
 			voronoiLen(i)=0.5*(refLen(i-1)+refLen(i));
 	}
+	
 }
 
 Vector3d elasticRod::getVertex(int k)

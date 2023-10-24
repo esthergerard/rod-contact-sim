@@ -5,7 +5,6 @@
 
 using namespace SymEngine;
 
-
 class symbolicEquations
 {
 public:

@@ -16,10 +16,10 @@ public:
 private:
 	elasticRod *rod;
 	timeStepper *stepper;
-    Vector3d gVector;
-    VectorXd massGravity;
-    void setGravity();
-		int rod_idx;
+	Vector3d gVector;
+	VectorXd massGravity;
+	void setGravity();
+	int rod_idx;
 };
 
 #endif

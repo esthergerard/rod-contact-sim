@@ -24,7 +24,7 @@ void inertialForce::computeFi()
 				- (rod->massArray[i] * rod->u[i])/(rod->dt);
 
 		ForceVec(i) = f;
-
+		
 		stepper->addForce(i, f, rod_idx);
 	}
 }

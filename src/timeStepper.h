@@ -15,8 +15,7 @@
 #define IFORMAT "%lli"
 #endif
 
-
-//extern "C" void dgbsv_( int* n, int* kl, int* ku, int* nrhs, double* ab, int* ldab, int* ipiv, double* b, int* ldb, int* info );
+// extern "C" void dgbsv_( int* n, int* kl, int* ku, int* nrhs, double* ab, int* ldab, int* ipiv, double* b, int* ldb, int* info );
 
 /* PARDISO prototype. */
 // extern "C" void pardisoinit (void   *, int    *,   int *, int *, double *, int *);
@@ -31,28 +30,26 @@
 class timeStepper
 {
 public:
-	timeStepper(std::vector<elasticRod*> m_rod_vec);
+	timeStepper(std::vector<elasticRod *> m_rod_vec);
 	~timeStepper();
-	double* getForce();
-	double* getJacobian();
+	double *getForce();
+	double *getJacobian();
 	void setZero();
 	void addForce(int ind, double p, int idx);
 	void addJacobian(int ind1, int ind2, double p, int idx);
-  void addJacobian(int ind1, int ind2, double p, int idx1, int idx2);
+	void addJacobian(int ind1, int ind2, double p, int idx1, int idx2);
 	void integrator();
 	double *dx;
-  VectorXd DX;
+	VectorXd DX;
 	VectorXd Force;
-  VectorXd force;
-  MatrixXd Jacobian;
-
-
+	VectorXd force;
+	MatrixXd Jacobian;
 
 private:
 	elasticRod *rod;
-  elasticRod *rod1;
+	elasticRod *rod1;
 
-	std::vector<elasticRod*> rod_vec;
+	std::vector<elasticRod *> rod_vec;
 	int kl, ku, freeDOF;
 
 	double *totalForce;
@@ -66,9 +63,9 @@ private:
 	int NUMROWS;
 	int jacobianLen;
 	int nrhs;
-  int *ipiv;
-  int info;
-  int ldb;
+	int *ipiv;
+	int info;
+	int ldb;
 
 	void pardisoSolver();
 };

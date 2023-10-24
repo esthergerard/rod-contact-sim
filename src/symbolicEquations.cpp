@@ -1,7 +1,7 @@
 #include "symbolicEquations.h"
 
-
-symbolicEquations::symbolicEquations() {
+symbolicEquations::symbolicEquations()
+{
     x1s_x = symbol("x1s_x");
     x1s_y = symbol("x1s_y");
     x1s_z = symbol("x1s_z");
@@ -49,40 +49,42 @@ symbolicEquations::symbolicEquations() {
     opt_level = 3;
 }
 
-
 // For some reason SymEngine doesn't have this implemented X_X
-void symbolicEquations::subtract_matrix(const DenseMatrix &A, const DenseMatrix &B, DenseMatrix &C) {
+void symbolicEquations::subtract_matrix(const DenseMatrix &A, const DenseMatrix &B, DenseMatrix &C)
+{
     assert((A.nrows() == B.nrows()) && (A.ncols() == B.ncols()));
-    for (unsigned i=0; i < A.nrows(); i++) {
-        for (unsigned j=0; j < A.ncols(); j++) {
+    for (unsigned i = 0; i < A.nrows(); i++)
+    {
+        for (unsigned j = 0; j < A.ncols(); j++)
+        {
             C.set(i, j, sub(A.get(i, j), B.get(i, j)));
         }
     }
 }
 
-
-
-void symbolicEquations::get_norm(const DenseMatrix &num, RCP<const Basic> &C) {
+void symbolicEquations::get_norm(const DenseMatrix &num, RCP<const Basic> &C)
+{
     DenseMatrix tmp(num.nrows(), num.ncols());
     num.elementwise_mul_matrix(num, tmp);
     C = sqrt(add(tmp.as_vec_basic()));
 }
 
-
-void symbolicEquations::convert_to_unit_vector(const DenseMatrix &num, DenseMatrix &C) {
+void symbolicEquations::convert_to_unit_vector(const DenseMatrix &num, DenseMatrix &C)
+{
     DenseMatrix tmp(num.nrows(), num.ncols());
     num.elementwise_mul_matrix(num, tmp);
     auto norm = sqrt(add(tmp.as_vec_basic()));
-    for (unsigned i=0; i < num.nrows(); i++) {
-        for (unsigned j=0; j < num.ncols(); j++) {
+    for (unsigned i = 0; i < num.nrows(); i++)
+    {
+        for (unsigned j = 0; j < num.ncols(); j++)
+        {
             C.set(i, j, div(num.get(i, j), norm));
         }
     }
 }
 
-
-
-void symbolicEquations::generateContactPotentialPiecewiseFunctions(bool imc) {
+void symbolicEquations::generateContactPotentialPiecewiseFunctions(bool imc)
+{
     // POINT TO POINT
     DenseMatrix x1s({x1s_x, x1s_y, x1s_z});
     DenseMatrix x1e({x1e_x, x1e_y, x1e_z});
@@ -91,9 +93,9 @@ void symbolicEquations::generateContactPotentialPiecewiseFunctions(bool imc) {
     int num_rows = x1s.nrows();
     int num_cols = x1s.ncols();
 
-    vec_basic nodes_vec_p2p {x1s_x, x1s_y, x1s_z,
-                             x1e_x, x1e_y, x1e_z};
-    DenseMatrix nodes_p2p {nodes_vec_p2p};
+    vec_basic nodes_vec_p2p{x1s_x, x1s_y, x1s_z,
+                            x1e_x, x1e_y, x1e_z};
+    DenseMatrix nodes_p2p{nodes_vec_p2p};
 
     vec_basic func_p2p_inputs(nodes_vec_p2p);
     func_p2p_inputs.push_back(K1);
@@ -104,7 +106,8 @@ void symbolicEquations::generateContactPotentialPiecewiseFunctions(bool imc) {
     RCP<const Basic> dist_p2p;
     get_norm(e1, dist_p2p);
 
-    if (imc) {
+    if (imc)
+    {
         // Point to Point   2h - δ < Δ < 2h + δ
         RCP<const Basic> E_p2p = pow(mul(div(one, K1), log(add(one, exp(mul(K1, sub(h2, dist_p2p)))))), 2);
         DenseMatrix E_p2p_potential({E_p2p});
@@ -129,7 +132,8 @@ void symbolicEquations::generateContactPotentialPiecewiseFunctions(bool imc) {
         E_p2p_pen_gradient_func.init(func_p2p_inputs, E_p2p_pen_gradient.as_vec_basic(), symbolic_cse, opt_level);
         E_p2p_pen_hessian_func.init(func_p2p_inputs, E_p2p_pen_hessian.as_vec_basic(), symbolic_cse, opt_level);
     }
-    else {
+    else
+    {
         // We use K1 instead of delta just so we don't have to redefine functions
         RCP<const Basic> E_p2p_ipc = mul(pow(sub(sub(dist_p2p, h2), K1), 2), log(div(K1, sub(dist_p2p, h2))));
         DenseMatrix E_p2p_ipc_potential{{E_p2p_ipc}};
@@ -144,10 +148,10 @@ void symbolicEquations::generateContactPotentialPiecewiseFunctions(bool imc) {
     }
 
     // POINT TO EDGE
-    vec_basic nodes_vec_e2p {x1s_x, x1s_y, x1s_z,
-                             x1e_x, x1e_y, x1e_z,
-                             x2s_x, x2s_y, x2s_z};
-    DenseMatrix nodes_e2p {nodes_vec_e2p};
+    vec_basic nodes_vec_e2p{x1s_x, x1s_y, x1s_z,
+                            x1e_x, x1e_y, x1e_z,
+                            x2s_x, x2s_y, x2s_z};
+    DenseMatrix nodes_e2p{nodes_vec_e2p};
     vec_basic func_e2p_inputs(nodes_vec_e2p);
     func_e2p_inputs.push_back(K1);
     func_e2p_inputs.push_back(h2);
@@ -164,7 +168,8 @@ void symbolicEquations::generateContactPotentialPiecewiseFunctions(bool imc) {
 
     RCP<const Basic> dist_e2p = div(frac1, dist_p2p);
 
-    if (imc) {
+    if (imc)
+    {
         // Point to Edge   2h - δ < Δ < 2h + δ
         RCP<const Basic> E_e2p = pow(mul(div(one, K1), log(add(one, exp(mul(K1, sub(h2, dist_e2p)))))), 2);
         DenseMatrix E_e2p_potential{{E_e2p}};
@@ -189,7 +194,8 @@ void symbolicEquations::generateContactPotentialPiecewiseFunctions(bool imc) {
         E_e2p_pen_gradient_func.init(func_e2p_inputs, E_e2p_pen_gradient.as_vec_basic(), symbolic_cse, opt_level);
         E_e2p_pen_hessian_func.init(func_e2p_inputs, E_e2p_pen_hessian.as_vec_basic(), symbolic_cse, opt_level);
     }
-    else {
+    else
+    {
         RCP<const Basic> E_e2p_ipc = mul(pow(sub(sub(dist_e2p, h2), K1), 2), log(div(K1, sub(dist_e2p, h2))));
         DenseMatrix E_e2p_ipc_potential{{E_e2p_ipc}};
 
@@ -203,11 +209,11 @@ void symbolicEquations::generateContactPotentialPiecewiseFunctions(bool imc) {
     }
 
     // EDGE TO EDGE
-    vec_basic nodes_vec_e2e {x1s_x, x1s_y, x1s_z,
-                             x1e_x, x1e_y, x1e_z,
-                             x2s_x, x2s_y, x2s_z,
-                             x2e_x, x2e_y, x2e_z};
-    DenseMatrix nodes_e2e {nodes_vec_e2e};
+    vec_basic nodes_vec_e2e{x1s_x, x1s_y, x1s_z,
+                            x1e_x, x1e_y, x1e_z,
+                            x2s_x, x2s_y, x2s_z,
+                            x2e_x, x2e_y, x2e_z};
+    DenseMatrix nodes_e2e{nodes_vec_e2e};
     vec_basic func_e2e_inputs(nodes_vec_e2e);
     func_e2e_inputs.push_back(K1);
     func_e2e_inputs.push_back(h2);
@@ -221,7 +227,8 @@ void symbolicEquations::generateContactPotentialPiecewiseFunctions(bool imc) {
     num_hat.elementwise_mul_matrix(e13, temp);
     RCP<const Basic> dist_e2e = sqrt(pow(add(temp.as_vec_basic()), 2));
 
-    if (imc) {
+    if (imc)
+    {
         // Edge to Edge   2h - δ < Δ < 2h + δ
         RCP<const Basic> E_e2e = pow(mul(div(one, K1), log(add(one, exp(mul(K1, sub(h2, dist_e2e)))))), 2);
         DenseMatrix E_e2e_potential{{E_e2e}};
@@ -246,7 +253,8 @@ void symbolicEquations::generateContactPotentialPiecewiseFunctions(bool imc) {
         E_e2e_pen_gradient_func.init(func_e2e_inputs, E_e2e_pen_gradient.as_vec_basic(), symbolic_cse, opt_level);
         E_e2e_pen_hessian_func.init(func_e2e_inputs, E_e2e_pen_hessian.as_vec_basic(), symbolic_cse, opt_level);
     }
-    else {
+    else
+    {
         RCP<const Basic> E_e2e_ipc = mul(pow(sub(sub(dist_e2e, h2), K1), 2), log(div(K1, sub(dist_e2e, h2))));
         DenseMatrix E_e2e_ipc_potential{{E_e2e_ipc}};
 
@@ -260,8 +268,8 @@ void symbolicEquations::generateContactPotentialPiecewiseFunctions(bool imc) {
     }
 }
 
-
-void symbolicEquations::generateFrictionJacobianPiecewiseFunctions() {
+void symbolicEquations::generateFrictionJacobianPiecewiseFunctions()
+{
     DenseMatrix nodes{{x1s_x, x1s_y, x1s_z,
                        x1e_x, x1e_y, x1e_z,
                        x2s_x, x2s_y, x2s_z,
@@ -281,24 +289,24 @@ void symbolicEquations::generateFrictionJacobianPiecewiseFunctions() {
     DenseMatrix f2s({f2s_x, f2s_y, f2s_z});
     DenseMatrix f2e({f2e_x, f2e_y, f2e_z});
 
-    vec_basic ffr_input {x1s_x, x1s_y, x1s_z,
-                         x1e_x, x1e_y, x1e_z,
-                         x2s_x, x2s_y, x2s_z,
-                         x2e_x, x2e_y, x2e_z,
-                         x1s_x0, x1s_y0, x1s_z0,
-                         x1e_x0, x1e_y0, x1e_z0,
-                         x2s_x0, x2s_y0, x2s_z0,
-                         x2e_x0, x2e_y0, x2e_z0,
-                         f1s_x, f1s_y, f1s_z,
-                         f1e_x, f1e_y, f1e_z,
-                         f2s_x, f2s_y, f2s_z,
-                         f2e_x, f2e_y, f2e_z,
-                         mu, dt, K2};
+    vec_basic ffr_input{x1s_x, x1s_y, x1s_z,
+                        x1e_x, x1e_y, x1e_z,
+                        x2s_x, x2s_y, x2s_z,
+                        x2e_x, x2e_y, x2e_z,
+                        x1s_x0, x1s_y0, x1s_z0,
+                        x1e_x0, x1e_y0, x1e_z0,
+                        x2s_x0, x2s_y0, x2s_z0,
+                        x2e_x0, x2e_y0, x2e_z0,
+                        f1s_x, f1s_y, f1s_z,
+                        f1e_x, f1e_y, f1e_z,
+                        f2s_x, f2s_y, f2s_z,
+                        f2e_x, f2e_y, f2e_z,
+                        mu, dt, K2};
 
-    vec_basic cforces {f1s_x, f1s_y, f1s_z,
-                       f1e_x, f1e_y, f1e_z,
-                       f2s_x, f2s_y, f2s_z,
-                       f2e_x, f2e_y, f2e_z};
+    vec_basic cforces{f1s_x, f1s_y, f1s_z,
+                      f1e_x, f1e_y, f1e_z,
+                      f2s_x, f2s_y, f2s_z,
+                      f2e_x, f2e_y, f2e_z};
 
     DenseMatrix f1(3, 1);
     DenseMatrix f2(3, 1);

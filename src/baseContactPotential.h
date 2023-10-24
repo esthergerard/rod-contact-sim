@@ -7,8 +7,8 @@
 #include "collisionDetector.h"
 #include "symbolicEquations.h"
 
-
-class baseContactPotential {
+class baseContactPotential
+{
 public:
     baseContactPotential(vector<elasticRod *> m_rod, timeStepper &m_stepper, collisionDetector &m_col_detector,
                          double m_delta);
@@ -16,6 +16,7 @@ public:
     void computeFc();
     void computeFcJc();
     double contact_stiffness;
+
 protected:
     vector<elasticRod *> rod_vec;
     timeStepper *stepper;
