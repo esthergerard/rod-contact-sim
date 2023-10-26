@@ -52,9 +52,9 @@ void initGL() {
 //	gluLookAt(0.05, 0.05, 0.1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
 //	gluLookAt(0.00, -0.3, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
 
-// gluLookAt(0.05, 0.05, 0.1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
+    gluLookAt(0.05, 0.05, 0.1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
 
-    gluLookAt(0.00, 0.00, 0.3, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0);
+    // gluLookAt(0.00, 0.00, 0.3, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0);
 
     glPushMatrix();
 
@@ -86,7 +86,7 @@ void display(void) {
 
         //draw a line
         glColor3f(0.1, 0.1, 0.1);
-        glLineWidth(3.0);
+        glLineWidth(4.0);
 
         for (int i = 0; i < rods; i++) {
             glBegin(GL_LINES);
@@ -122,8 +122,7 @@ int main(int argc, char *argv[]) {
     rods = inputData.GetIntOpt("numFlagella");
 
 
-    myWorld.OpenFile(simfile, configfile);
-
+    myWorld.OpenFile(simfile, configfile, "node_data");
     bool render = myWorld.isRender();
     if (render) // if OpenGL visualization is on
     {

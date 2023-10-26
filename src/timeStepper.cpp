@@ -44,6 +44,7 @@ void timeStepper::addForce(int ind, double p, int idx)
 	{
 		mappedInd = rod->fullToUnconsMap[ind];
 		// totalForce[mappedInd] = totalForce[mappedInd] + p; // subtracting elastic force
+		// cout << "Force: " << Force[mappedInd + offset] << endl;
 		Force[mappedInd + offset] = Force[mappedInd + offset] + p;
 	}
 	force[idx * rod->ndof + ind] = force[idx * rod->ndof + ind] + p;
@@ -117,6 +118,7 @@ void timeStepper::pardisoSolver()
 			}
 		}
 	}
+
 	MKL_INT mtype = 11; /* Real unsymmetric matrix */
 						// Descriptor of main sparse matrix properties
 	double b[n], x[n], bs[n], res, res0;

@@ -13,7 +13,7 @@
 #include "inertialForce.h"
 
 // include external force
-#include "RegularizedStokeslet.h"
+// #include "RegularizedStokeslet.h"
 #include "contactPotentialIPC.h"
 #include "contactPotentialIMC.h"
 #include "externalGravityForce.h"
@@ -61,7 +61,7 @@ public:
     bool isRender();
 
     // file output
-    void OpenFile(ofstream &simfile, ofstream &configfile);
+    void OpenFile(ofstream &simfile, ofstream &configfile, string filename);
 
     void CloseFile(ofstream &simfile, ofstream &configfile);
 
@@ -69,6 +69,9 @@ public:
 
     int numVertices;
 
+    string knot_config_1 = "reef1";            // get initial knot configuration
+    string knot_config_2 = "reef2";
+    
 
 private:
 
@@ -89,6 +92,11 @@ private:
     double omega;
     double distance;
 
+    double pull_time;
+    double release_time;
+    double wait_time;
+    double pull_speed;
+
     double tol, stol;
     int maxIter; // maximum number of iterations
     double characteristicForce;
@@ -101,6 +109,7 @@ private:
     double nu;
     double delta;
     double col_limit;
+    VectorXd theta ;
 
     // flag for ipc or imc
     int ipc;
@@ -122,7 +131,7 @@ private:
     std::vector<inertialForce *> v_inertialForce;
     std::vector<externalGravityForce *> v_gravityForce;
 
-    RegularizedStokeslet *m_RegularizedStokeslet;
+    // RegularizedStokeslet *m_RegularizedStokeslet;
     collisionDetector *m_collisionDetector;
     contactPotentialIPC *m_contactPotentialIPC;
     contactPotentialIMC *m_contactPotentialIMC;
@@ -131,7 +140,7 @@ private:
     int timeStep;
     int iter;
 
-    void rodGeometry(double offset_x, double offset_y, double offset_theta);
+    void rodGeometry(int &index_Rod);
 
     void rodBoundaryCondition(int n);
 
@@ -163,6 +172,8 @@ private:
     double IPCLineSearch();
 
     void updateBoundary();
+    
+    void calculateForce();
 
     void printSimData();
 
@@ -170,6 +181,10 @@ private:
 
     double normf;
     double normf0;
+
+    
+    Vector3d temp;
+    Vector3d temp1;
 };
 
 #endif
