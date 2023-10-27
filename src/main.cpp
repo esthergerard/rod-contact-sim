@@ -49,12 +49,13 @@ void initGL() {
     //glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
 
     glLoadIdentity();
+    glOrtho(-1.0/3.0f, 1.0/3.0f, -1.0/3.0f, 1.0/3.0f, -1.0, 1.0);
 //	gluLookAt(0.05, 0.05, 0.1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
 //	gluLookAt(0.00, -0.3, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
 
-    gluLookAt(0.05, 0.05, 0.1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
+    // gluLookAt(0.05, 0.05, 0.1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
 
-    // gluLookAt(0.00, 0.00, 0.3, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0);
+    gluLookAt(0.00, 0.00, 0.3, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0);
 
     glPushMatrix();
 
