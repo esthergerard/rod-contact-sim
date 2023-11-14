@@ -43,23 +43,37 @@ static void Key(unsigned char key, int x, int y) {
 void initGL() {
     glClearColor(0.7f, 0.7f, 0.7f, 0.0f); // Set background color to black and opaque
     glClearDepth(10.0f);                   // Set background depth to farthest
-    //glEnable(GL_DEPTH_TEST);   // Enable depth testing for z-culling
-    //glDepthFunc(GL_LEQUAL);    // Set the type of depth-test
     glShadeModel(GL_SMOOTH);   // Enable smooth shading
-    //glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
 
+    // // for 3d view
+    // glLoadIdentity();
+    // glOrtho(-1.0/3.0f, 1.0/3.0f, -1.0/3.0f, 1.0/3.0f, -1.0, 1.0);
+    // gluLookAt(0.05, 0.05, 0.1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
+    // glPushMatrix();
+
+    // for (XY) view
+    glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(-1.0/3.0f, 1.0/3.0f, -1.0/3.0f, 1.0/3.0f, -1.0, 1.0);
-//	gluLookAt(0.05, 0.05, 0.1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
-//	gluLookAt(0.00, -0.3, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();     
 
-    // gluLookAt(0.05, 0.05, 0.1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
+    // // for (XZ) view
+    // glMatrixMode(GL_PROJECTION);
+    // glLoadIdentity();
+    // glOrtho(-1.0/3.0f, 1.0/3.0f, -1.0/3.0f, 1.0/3.0f, -1.0, 1.0);
+    // glMatrixMode(GL_MODELVIEW);
+    // glLoadIdentity();
+    // glRotatef(90.0, 1.0, 0.0, 0.0);
 
-    gluLookAt(0.00, 0.00, 0.3, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0);
+    // // for (YZ) view
+    // glMatrixMode(GL_PROJECTION);
+    // glLoadIdentity();
+    // glOrtho(-1.0/3.0f, 1.0/3.0f, -1.0/3.0f, 1.0/3.0f, -1.0, 1.0);
+    // glMatrixMode(GL_MODELVIEW);
+    // glLoadIdentity();
+    // glRotatef(90.0, 0.0, 1.0, 0.0);
 
-    glPushMatrix();
-
-    //glMatrixMode(GL_MODELVIEW);
 }
 
 void display(void) {
