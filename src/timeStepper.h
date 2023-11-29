@@ -35,6 +35,7 @@ public:
 	double *getForce();
 	double *getJacobian();
 	void setZero();
+	void computeFreeDOF();
 	void addForce(int ind, double p, int idx);
 	void addJacobian(int ind1, int ind2, double p, int idx);
 	void addJacobian(int ind1, int ind2, double p, int idx1, int idx2);

@@ -76,6 +76,18 @@ void timeStepper::addJacobian(int ind1, int ind2, double p, int idx1, int idx2) 
 	}
 }
 
+void timeStepper::computeFreeDOF()
+{
+	freeDOF = 0;
+	for (int i = 0; i < rod_vec.size(); i++)
+	{
+		rod = rod_vec[i];
+		freeDOF = freeDOF + rod->uncons;
+	}
+
+	cout << "freeDOF - compute DOF: " << freeDOF << endl;
+}
+
 void timeStepper::setZero()
 {
 	Force = VectorXd::Zero(freeDOF);
@@ -238,6 +250,10 @@ void timeStepper::pardisoSolver()
 	PARDISO(pt, &maxfct, &mnum, &mtype, &phase,
 			&n, &ddum, ia, ja, &idum, &nrhs,
 			iparm, &msglvl, &ddum, &ddum, &error);
+			
+	// new DX at the good size
+	// dx = new double[freeDOF];
+	DX = VectorXd::Zero(freeDOF);
 
 	for (int i = 0; i < n; i++)
 	{

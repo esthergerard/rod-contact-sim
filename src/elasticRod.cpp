@@ -38,6 +38,14 @@ elasticRod::elasticRod(MatrixXd initialNodes, MatrixXd undeformed,
 	u = VectorXd::Zero(ndof);
 }
 
+void elasticRod::zeroConstraints()
+{
+	for (int i = 0; i < ndof; i++)
+	{
+		isConstrained[i] = 0;
+	}
+}
+
 void elasticRod::setup()
 {
 	// compute the number of constrained and unconstrained dof

@@ -114,6 +114,7 @@ class elasticRod
 	int* unconstrainedMap;
 	int* fullToUnconsMap;
 	void setupMap();
+	void zeroConstraints();
 
 	VectorXd xold;
 
