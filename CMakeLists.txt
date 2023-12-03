@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.11)
 project(flagellaBundling)
 
 if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_BUILD_TYPE Release)
 endif()
 set(CMAKE_CXX_FLAGS "-Wno-deprecated-declarations -fopenmp")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
@@ -33,6 +33,7 @@ add_executable(simDER
         src/elasticTwistingForce.cpp
         src/externalGravityForce.cpp
         src/inertialForce.cpp
+        src/dumbVisco.cpp
         src/timeStepper.cpp
         src/setInput.cpp
         src/RegularizedStokeslet.cpp

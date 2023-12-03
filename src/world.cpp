@@ -246,6 +246,7 @@ void world::setRodStepper()
         v_twistingForce.push_back(new elasticTwistingForce(*rodsVector[i], *stepper, i));
         v_inertialForce.push_back(new inertialForce(*rodsVector[i], *stepper, i));
         v_gravityForce.push_back(new externalGravityForce(*rodsVector[i], *stepper, gVector, i));
+        v_dumbviscoForce.push_back(new dumbVisco(*rodsVector[i], *stepper, i));
     }
     // // define RSS model
     // m_RegularizedStokeslet = new RegularizedStokeslet(rodsVector, *stepper, viscosity, epsilon);
@@ -348,10 +349,8 @@ void world::rodBoundaryCondition(int n)
 
 void world::updateBoundary()
 {
-    // apply omega for b.c.
     for (int i = 0; i < numRod; i++)
     {
-
         Vector3d u;
         u(0) = 0;
         u(1) = pull_speed;
@@ -365,6 +364,7 @@ void world::updateBoundary()
         if (currentTime <= 2)
         {
 
+            v_dumbviscoForce[i]->isReleasing = true;
             // N1 KNOT
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(0) - u * deltaTime, 0);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(1) - u * deltaTime, 1);
@@ -377,6 +377,8 @@ void world::updateBoundary()
             // init constrained DOF
             rodsVector[i]->zeroConstraints();
 
+            v_dumbviscoForce[i]->isReleasing = true;
+
             // STEP1 TO REEF KNOT
             Vector3d u_BC1; // à appliquer sur le 23e noeud
             u_BC1(0) = 0;
@@ -386,14 +388,10 @@ void world::updateBoundary()
             u_BC2(0) = 0.08;
             u_BC2(1) = 0;
             u_BC2(2) = 0;
-            Vector3d u_collision_x; // à appliquer sur le 33e noeud
-            u_collision_x(0) = 0;
-            u_collision_x(1) = 0;
-            u_collision_x(2) = 0;
             // END STEP 1 TO REEF KNOT
             // STEP1 TO REEF KNOT
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 1) + u_collision_x * deltaTime, numVertices - 1);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 2) + u_collision_x * deltaTime, numVertices - 2);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 1), numVertices - 1);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 2), numVertices - 2);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 90), numVertices - 90);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 91), numVertices - 91);
             rodsVector[i]->setThetaBoundaryCondition(rodsVector[i]->getTheta(numVertices - 90), numVertices - 90);
@@ -416,6 +414,8 @@ void world::updateBoundary()
         {
             // init constrained DOF
             rodsVector[i]->zeroConstraints();
+
+            v_dumbviscoForce[i]->isReleasing = true;
 
             // SETP2 TO REEF KNOT
             // CONSTANT SPEED ROUND
@@ -857,25 +857,27 @@ void world::updateBoundary()
         {
             // init constrained DOF
             rodsVector[i]->zeroConstraints();
+            v_dumbviscoForce[i]->isReleasing = true;
             // STEP8 TO REEF KNOT
-            // rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 1) - u * deltaTime, numVertices - 1);
-            // rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 2) - u * deltaTime, numVertices - 2);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 32), numVertices - 32);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 31), numVertices - 31);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 1), numVertices - 1);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 2), numVertices - 2);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 35), numVertices - 35);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 36), numVertices - 36);
             // rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 60), numVertices - 60);
             // rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 61), numVertices - 61);
-            // rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 82), numVertices - 82);
-            // rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 83), numVertices - 83);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 82), numVertices - 82);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 83), numVertices - 83);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 90), numVertices - 90);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 91), numVertices - 91);
             rodsVector[i]->setThetaBoundaryCondition(rodsVector[i]->getTheta(numVertices - 90), numVertices - 90);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(98), 98);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(99), 99);
             rodsVector[i]->setThetaBoundaryCondition(rodsVector[i]->getTheta(98), 98);
-            // rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(30), 30);
-            // rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(31), 31);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(30), 30);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(31), 31);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(60), 60);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(61), 61);// Block inside loop
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(61), 61);
+            // Block inside loop
             for (int j = 90; j < (numVertices - 90); j++)
             {
                 rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(j), j);
@@ -887,6 +889,7 @@ void world::updateBoundary()
         {
             // init constrained DOF
             rodsVector[i]->zeroConstraints();
+            v_dumbviscoForce[i]->isReleasing = false;
             // STEP8 TO REEF KNOT
             // rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 1) - u * deltaTime, numVertices - 1);
             // rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 2) - u * deltaTime, numVertices - 2);
@@ -905,7 +908,7 @@ void world::updateBoundary()
             // rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(30), 30);
             // rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(31), 31);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(60) + u * deltaTime, 60);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(61) + u * deltaTime, 61);// Block inside loop
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(61) + u * deltaTime, 61); // Block inside loop
             for (int j = 90; j < (numVertices - 90); j++)
             {
                 rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(j), j);
@@ -949,6 +952,7 @@ void world::calculateForce()
         v_bendingForce[n]->computeFb();
         v_twistingForce[n]->computeFt();
         v_gravityForce[n]->computeFg();
+        v_dumbviscoForce[n]->computeFv();
 
         temp[0] = stepper->force[0] + stepper->force[4];
         temp[1] = stepper->force[1] + stepper->force[5];
@@ -1029,6 +1033,9 @@ void world::newtonMethod(bool &solved)
 
             v_gravityForce[n]->computeFg();
             v_gravityForce[n]->computeJg();
+
+            v_dumbviscoForce[n]->computeFv();
+            v_dumbviscoForce[n]->computeJv();
         }
 
         // m_RegularizedStokeslet->computeFrs(); // RSS model
@@ -1053,6 +1060,7 @@ void world::newtonMethod(bool &solved)
 
         // Compute norm of the force equations.
         normf = stepper->Force.norm();
+        cout << "normf: " << normf << endl;
 
         if (iter == 0)
             normf0 = normf;
@@ -1191,6 +1199,7 @@ double world::IPCLineSearch()
             v_bendingForce[n]->computeFb();
             v_twistingForce[n]->computeFt();
             v_gravityForce[n]->computeFg();
+            v_dumbviscoForce[n]->computeFv();
         }
 
         // m_RegularizedStokeslet->computeFrs();
@@ -1249,6 +1258,7 @@ double world::lineSearch()
             v_bendingForce[n]->computeFb();
             v_twistingForce[n]->computeFt();
             v_gravityForce[n]->computeFg();
+            v_dumbviscoForce[n]->computeFv();
         }
 
         // m_RegularizedStokeslet->computeFrs();

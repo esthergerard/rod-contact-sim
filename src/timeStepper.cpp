@@ -85,7 +85,7 @@ void timeStepper::computeFreeDOF()
 		freeDOF = freeDOF + rod->uncons;
 	}
 
-	cout << "freeDOF - compute DOF: " << freeDOF << endl;
+	// cout << "freeDOF - compute DOF: " << freeDOF << endl;
 }
 
 void timeStepper::setZero()
@@ -250,7 +250,7 @@ void timeStepper::pardisoSolver()
 	PARDISO(pt, &maxfct, &mnum, &mtype, &phase,
 			&n, &ddum, ia, ja, &idum, &nrhs,
 			iparm, &msglvl, &ddum, &ddum, &error);
-			
+
 	// new DX at the good size
 	// dx = new double[freeDOF];
 	DX = VectorXd::Zero(freeDOF);

@@ -13,6 +13,7 @@
 #include "inertialForce.h"
 
 // include external force
+#include "dumbVisco.h"
 // #include "RegularizedStokeslet.h"
 #include "contactPotentialIPC.h"
 #include "contactPotentialIMC.h"
@@ -68,9 +69,6 @@ public:
     void CoutData(ofstream &simfile, ofstream &configfile, double &time_taken);
 
     int numVertices;
-
-    string knot_config_1 = "reef1";            // get initial knot configuration
-    string knot_config_2 = "reef2";
     
 
 private:
@@ -130,6 +128,7 @@ private:
     std::vector<elasticTwistingForce *> v_twistingForce;
     std::vector<inertialForce *> v_inertialForce;
     std::vector<externalGravityForce *> v_gravityForce;
+    std::vector<dumbVisco *> v_dumbviscoForce;
 
     // RegularizedStokeslet *m_RegularizedStokeslet;
     collisionDetector *m_collisionDetector;
