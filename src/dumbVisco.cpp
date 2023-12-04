@@ -10,7 +10,7 @@ dumbVisco::dumbVisco(elasticRod &m_rod, timeStepper &m_stepper, int idx)
 	isReleasing = false;
 
 	double k_dumb_visco;
-	k_dumb_visco = 0.8;
+	k_dumb_visco = 1;
 }
 
 dumbVisco::~dumbVisco()

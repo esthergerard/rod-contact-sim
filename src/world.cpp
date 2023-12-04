@@ -372,7 +372,7 @@ void world::updateBoundary()
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 2) + u * deltaTime, numVertices - 2);
         }
 
-        else if (currentTime > 2 && currentTime <= 4)
+        else if (currentTime > 2 && currentTime <= 2.5)
         {
             // init constrained DOF
             rodsVector[i]->zeroConstraints();
@@ -382,11 +382,11 @@ void world::updateBoundary()
             // STEP1 TO REEF KNOT
             Vector3d u_BC1; // à appliquer sur le 23e noeud
             u_BC1(0) = 0;
-            u_BC1(1) = 0.1;
+            u_BC1(1) = 0.08;
             u_BC1(2) = 0;
             Vector3d u_BC2; // à appliquer sur le 33e noeud
-            u_BC2(0) = 0.08;
-            u_BC2(1) = 0;
+            u_BC2(0) = 0.02;
+            u_BC2(1) = 0.02;
             u_BC2(2) = 0;
             // END STEP 1 TO REEF KNOT
             // STEP1 TO REEF KNOT
@@ -405,9 +405,43 @@ void world::updateBoundary()
             rodsVector[i]->setThetaBoundaryCondition(rodsVector[i]->getTheta(98), 98);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(30) + u_BC1 * deltaTime, 30);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(31) + u_BC1 * deltaTime, 31);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(60) + u_BC2 * deltaTime, 60);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(61) + u_BC2 * deltaTime, 61);
+            rodsVector[i]->setThetaBoundaryCondition(rodsVector[i]->getTheta(30), 30);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(64) + u_BC2 * deltaTime, 64);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(65) + u_BC2 * deltaTime, 65);
             // END SETP1 TO REEF KNOT
+        }
+
+        else if (currentTime > 2.5 && currentTime <= 4)
+        {
+            // init constrained DOF
+            rodsVector[i]->zeroConstraints();
+
+            v_dumbviscoForce[i]->isReleasing = true;
+
+            // STEP1 TO REEF KNOT
+            Vector3d u_BC1; // à appliquer sur le 23e noeud
+            u_BC1(0) = 0;
+            u_BC1(1) = 0.08;
+            u_BC1(2) = 0;
+            // END STEP 1 TO REEF KNOT
+            // STEP1 TO REEF KNOT
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 1), numVertices - 1);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 2), numVertices - 2);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 90), numVertices - 90);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 91), numVertices - 91);
+            rodsVector[i]->setThetaBoundaryCondition(rodsVector[i]->getTheta(numVertices - 90), numVertices - 90);
+            // Block inside loop
+            for (int j = 90; j < (numVertices - 90); j++)
+            {
+                rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(j), j);
+            }
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(99), 99);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(98), 98);
+            rodsVector[i]->setThetaBoundaryCondition(rodsVector[i]->getTheta(98), 98);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(30) + u_BC1 * deltaTime, 30);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(31) + u_BC1 * deltaTime, 31);
+            rodsVector[i]->setThetaBoundaryCondition(rodsVector[i]->getTheta(30), 30);
+            
         }
 
         else if (currentTime > 4 && currentTime <= 8)
@@ -451,12 +485,13 @@ void world::updateBoundary()
             rodsVector[i]->setThetaBoundaryCondition(rodsVector[i]->getTheta(98), 98);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(30), 30);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(31), 31);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(60), 60);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(61), 61);
+            rodsVector[i]->setThetaBoundaryCondition(rodsVector[i]->getTheta(30), 30);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(64), 64);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(65), 65);
             // END STEP2 TO REEF KNOT
         }
 
-        else if (currentTime > 8 && currentTime <= 12)
+        else if (currentTime > 8 && currentTime <= 12.5)
         {
             // init constrained DOF
             rodsVector[i]->zeroConstraints();
@@ -466,7 +501,7 @@ void world::updateBoundary()
             u_offset_yz(2) = -0.005;
 
             Vector3d u_offset_x;
-            u_offset_x(0) = 0.01;
+            u_offset_x(0) = 0.007;
             u_offset_x(1) = 0;
             u_offset_x(2) = 0;
 
@@ -484,7 +519,7 @@ void world::updateBoundary()
             double sign = x1round.cross(x2round).dot(Vector3d(1, 0, 0)) < 0 ? -1.0 : 1.0;
             double full_angle = sign * angle_round_x;
             u_ROUND(0) = 0;
-            u_ROUND(1) = -speed_round * sin(full_angle);
+            u_ROUND(1) = -0.8 * speed_round * sin(full_angle);
             u_ROUND(2) = speed_round * cos(full_angle);
             // END CONSTANT SPEED ROUND
             // SETP3 TO REEF KNOT
@@ -505,12 +540,12 @@ void world::updateBoundary()
             rodsVector[i]->setThetaBoundaryCondition(rodsVector[i]->getTheta(98), 98);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(30), 30);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(31), 31);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(60), 60);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(61), 61);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(64), 64);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(65), 65);
             // END STEP3 TO REEF KNOT
         }
 
-        else if (currentTime > 12 && currentTime <= 15)
+        else if (currentTime > 12.5 && currentTime <= 15)
         {
             // init constrained DOF
             rodsVector[i]->zeroConstraints();
@@ -530,12 +565,12 @@ void world::updateBoundary()
             double full_angle = sign * angle_round_x;
             u_ROUND(0) = 0;
             u_ROUND(1) = -speed_round * sin(full_angle);
-            u_ROUND(2) = speed_round * cos(full_angle);
+            u_ROUND(2) = 0.8 * speed_round * cos(full_angle);
             // END CONSTANT SPEED ROUND
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 1) + u_offset_z * deltaTime + u_ROUND * deltaTime, numVertices - 1);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 2) + u_ROUND * deltaTime, numVertices - 2);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 60), numVertices - 60);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 61), numVertices - 61);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 50), numVertices - 50);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 51), numVertices - 51);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 85), numVertices - 85);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 86), numVertices - 86);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 90), numVertices - 90);
@@ -551,8 +586,13 @@ void world::updateBoundary()
             rodsVector[i]->setThetaBoundaryCondition(rodsVector[i]->getTheta(98), 98);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(30), 30);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(31), 31);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(60), 60);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(61), 61);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(64), 64);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(65), 65);
+            if (currentTime > 14.5)
+            {
+                rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 45), numVertices - 45);
+                rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 46), numVertices - 46);
+            }
             // END STEP4 TO REEF KNOT
         }
 
@@ -585,10 +625,12 @@ void world::updateBoundary()
             // END CONSTANT SPEED ROUND
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 1) + u_offset_y * deltaTime + u_ROUND * deltaTime, numVertices - 1);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 2) + u_ROUND * deltaTime, numVertices - 2);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 55), numVertices - 55);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 56), numVertices - 56);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 60), numVertices - 60);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 61), numVertices - 61);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 45), numVertices - 45);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 46), numVertices - 46);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 50), numVertices - 50);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 51), numVertices - 51);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 57), numVertices - 57);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 58), numVertices - 58);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 85), numVertices - 85);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 86), numVertices - 86);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 90), numVertices - 90);
@@ -604,8 +646,8 @@ void world::updateBoundary()
             rodsVector[i]->setThetaBoundaryCondition(rodsVector[i]->getTheta(98), 98);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(30), 30);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(31), 31);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(60), 60);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(61), 61);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(64), 64);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(65), 65);
             // END STEP5 TO REEF KNOT
         }
 
@@ -616,7 +658,7 @@ void world::updateBoundary()
             Vector3d u_back;
             u_back(0) = 0;
             u_back(1) = 0;
-            u_back(2) = 0.050;
+            u_back(2) = 0.045;
             Vector3d u_offset_x;
             u_offset_x(0) = -0.008;
             u_offset_x(1) = 0;
@@ -629,10 +671,12 @@ void world::updateBoundary()
             // STEP5bis TO REEF KNOT
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 1) + (u_back + u_offset_x) * deltaTime, numVertices - 1);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 2) + (u_back + u_offset_x) * deltaTime, numVertices - 2);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 55), numVertices - 55);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 56), numVertices - 56);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 60), numVertices - 60);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 61), numVertices - 61);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 45), numVertices - 45);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 46), numVertices - 46);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 50), numVertices - 50);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 51), numVertices - 51);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 57), numVertices - 57);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 58), numVertices - 58);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 85), numVertices - 85);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 86), numVertices - 86);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 90), numVertices - 90);
@@ -648,8 +692,8 @@ void world::updateBoundary()
             rodsVector[i]->setThetaBoundaryCondition(rodsVector[i]->getTheta(98), 98);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(30), 30);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(31), 31);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(60), 60);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(61), 61);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(64), 64);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(65), 65);
             // END STEP5bis TO REEF KNOT
         }
 
@@ -670,8 +714,8 @@ void world::updateBoundary()
             // STEP6 TO REEF KNOT
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 1), numVertices - 1);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 2), numVertices - 2);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 60), numVertices - 60);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 61), numVertices - 61);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 45), numVertices - 45);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 46), numVertices - 46);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 82) + u_pull_x * deltaTime, numVertices - 82);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 83) + u_pull_x * deltaTime, numVertices - 83);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 90) + u_push_y * deltaTime, numVertices - 90);
@@ -687,8 +731,10 @@ void world::updateBoundary()
             rodsVector[i]->setThetaBoundaryCondition(rodsVector[i]->getTheta(98), 98);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(30), 30);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(31), 31);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(60), 60);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(61), 61);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(64), 64);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(65), 65);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 50), numVertices - 50);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 51), numVertices - 51);
             // END STEP6 TO REEF KNOT
         }
 
@@ -719,12 +765,12 @@ void world::updateBoundary()
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 36) + (-u_pull_z) * deltaTime, numVertices - 36);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 15) + (u_release_y)*deltaTime, numVertices - 15);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 16) + (u_release_y)*deltaTime, numVertices - 16);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 47), numVertices - 47);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 48), numVertices - 48);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 50), numVertices - 50);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 51), numVertices - 51);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 60), numVertices - 60);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 61), numVertices - 61);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 45), numVertices - 45);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 46), numVertices - 46);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 57), numVertices - 57);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 58), numVertices - 58);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 82), numVertices - 82);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 83), numVertices - 83);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 90), numVertices - 90);
@@ -740,12 +786,12 @@ void world::updateBoundary()
             rodsVector[i]->setThetaBoundaryCondition(rodsVector[i]->getTheta(98), 98);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(30), 30);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(31), 31);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(60), 60);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(61), 61);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(64), 64);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(65), 65);
             // END STEP7a TO REEF KNOT
         }
 
-        else if (currentTime > 24.5 && currentTime <= 25)
+        else if (currentTime > 24.5 && currentTime <= 25.5)
         {
             // init constrained DOF
             rodsVector[i]->zeroConstraints();
@@ -787,8 +833,10 @@ void world::updateBoundary()
             // rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 31) + (u_pull_x + u_release_y) * deltaTime, numVertices - 31);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 15), numVertices - 15);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 16), numVertices - 16);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 60), numVertices - 60);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 61), numVertices - 61);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 45), numVertices - 45);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 46), numVertices - 46);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 50), numVertices - 50);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 51), numVertices - 51);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 82), numVertices - 82);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 83), numVertices - 83);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 90), numVertices - 90);
@@ -804,56 +852,58 @@ void world::updateBoundary()
             rodsVector[i]->setThetaBoundaryCondition(rodsVector[i]->getTheta(98), 98);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(30), 30);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(31), 31);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(60), 60);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(61), 61);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(64), 64);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(65), 65);
             // END STEP7a TO REEF KNOT
         }
 
-        else if (currentTime > 25 && currentTime <= 26)
-        {
-            // init constrained DOF
-            rodsVector[i]->zeroConstraints();
-            // STEP7c TO REEF KNOT
-            Vector3d u_release_y;
-            u_release_y(0) = 0;
-            u_release_y(1) = -0.02;
-            u_release_y(2) = 0;
+        // else if (currentTime > 25.5 && currentTime <= 27)
+        // {
+        //     // init constrained DOF
+        //     rodsVector[i]->zeroConstraints();
+        //     // STEP7c TO REEF KNOT
+        //     Vector3d u_release_y;
+        //     u_release_y(0) = 0;
+        //     u_release_y(1) = -0.02;
+        //     u_release_y(2) = 0;
 
-            Vector3d u_pull_z;
-            u_pull_z(0) = 0;
-            u_pull_z(1) = 0;
-            u_pull_z(2) = 0.02;
+        //     Vector3d u_pull_z;
+        //     u_pull_z(0) = 0;
+        //     u_pull_z(1) = 0;
+        //     u_pull_z(2) = 0.02;
 
-            // STEP7c TO REEF KNOT
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 1) + u_release_y * deltaTime, numVertices - 1);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 2) + u_release_y * deltaTime, numVertices - 2);
-            // rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 37), numVertices - 37);
-            // rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 38), numVertices - 38);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 35) + u_pull_z * deltaTime, numVertices - 35);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 36) + u_pull_z * deltaTime, numVertices - 36);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 60), numVertices - 60);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 61), numVertices - 61);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 82), numVertices - 82);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 83), numVertices - 83);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 90), numVertices - 90);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 91), numVertices - 91);
-            rodsVector[i]->setThetaBoundaryCondition(rodsVector[i]->getTheta(numVertices - 90), numVertices - 90);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(98), 98);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(99), 99);
-            rodsVector[i]->setThetaBoundaryCondition(rodsVector[i]->getTheta(98), 98);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(30), 30);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(31), 31);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(60), 60);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(61), 61);
-            // Block inside loop
-            for (int j = 90; j < (numVertices - 90); j++)
-            {
-                rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(j), j);
-            }
-            // END STEP7c TO REEF KNOT
-        }
+        //     // STEP7c TO REEF KNOT
+        //     rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 1) + u_release_y * deltaTime, numVertices - 1);
+        //     rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 2) + u_release_y * deltaTime, numVertices - 2);
+        //     // rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 37), numVertices - 37);
+        //     // rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 38), numVertices - 38);
+        //     rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 50), numVertices - 50);
+        //     rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 51), numVertices - 51);
+        //     rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 35) + u_pull_z * deltaTime, numVertices - 35);
+        //     rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 36) + u_pull_z * deltaTime, numVertices - 36);
+        //     rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 45), numVertices - 45);
+        //     rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 46), numVertices - 46);
+        //     rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 82), numVertices - 82);
+        //     rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 83), numVertices - 83);
+        //     rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 90), numVertices - 90);
+        //     rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 91), numVertices - 91);
+        //     rodsVector[i]->setThetaBoundaryCondition(rodsVector[i]->getTheta(numVertices - 90), numVertices - 90);
+        //     rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(98), 98);
+        //     rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(99), 99);
+        //     rodsVector[i]->setThetaBoundaryCondition(rodsVector[i]->getTheta(98), 98);
+        //     rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(30), 30);
+        //     rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(31), 31);
+        //     rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(64), 64);
+        //     rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(65), 65);
+        //     // Block inside loop
+        //     for (int j = 90; j < (numVertices - 90); j++)
+        //     {
+        //         rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(j), j);
+        //     }
+        //     // END STEP7c TO REEF KNOT
+        // }
 
-        else if (currentTime > 26 && currentTime <= 27)
+        else if (currentTime > 25.5 && currentTime <= 27.5)
         {
             // init constrained DOF
             rodsVector[i]->zeroConstraints();
@@ -875,8 +925,8 @@ void world::updateBoundary()
             rodsVector[i]->setThetaBoundaryCondition(rodsVector[i]->getTheta(98), 98);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(30), 30);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(31), 31);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(60), 60);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(61), 61);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(64), 64);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(65), 65);
             // Block inside loop
             for (int j = 90; j < (numVertices - 90); j++)
             {
@@ -885,7 +935,7 @@ void world::updateBoundary()
             // END STEP8 TO REEF KNOT
         }
 
-        else if (currentTime > 27 && currentTime <= 28)
+        else if (currentTime > 27.5 && currentTime <= 28)
         {
             // init constrained DOF
             rodsVector[i]->zeroConstraints();
@@ -907,8 +957,8 @@ void world::updateBoundary()
             rodsVector[i]->setThetaBoundaryCondition(rodsVector[i]->getTheta(98), 98);
             // rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(30), 30);
             // rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(31), 31);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(60) + u * deltaTime, 60);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(61) + u * deltaTime, 61); // Block inside loop
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(64) + u * deltaTime, 64);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(65) + u * deltaTime, 65); // Block inside loop
             for (int j = 90; j < (numVertices - 90); j++)
             {
                 rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(j), j);
@@ -1060,7 +1110,6 @@ void world::newtonMethod(bool &solved)
 
         // Compute norm of the force equations.
         normf = stepper->Force.norm();
-        cout << "normf: " << normf << endl;
 
         if (iter == 0)
             normf0 = normf;
