@@ -38,6 +38,14 @@ elasticRod::elasticRod(MatrixXd initialNodes, MatrixXd undeformed,
 	u = VectorXd::Zero(ndof);
 }
 
+void elasticRod::setYoungModulus(double newYoungM) {
+    youngM = newYoungM;
+}
+
+void elasticRod::setFriction(double newMU) {
+    friction = newMU;
+}
+
 void elasticRod::zeroConstraints()
 {
 	for (int i = 0; i < ndof; i++)

@@ -28,6 +28,8 @@ class elasticRod
 	Vector3d getTangent(int k);
 	double getTheta(int k);
 	void printInfo();
+	void setYoungModulus(double newYoungM);
+	void setFriction(double newMU);
 
 	Vector3d getVertexOld(int k);
 	Vector3d getVelocityOld(int k);

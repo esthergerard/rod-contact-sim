@@ -1149,7 +1149,7 @@ void world::updateBoundary()
             // END STEP8 TO REEF KNOT
         }
 
-        else if (currentTime > 30 && currentTime <= 31)
+        else if (currentTime > 30 && currentTime <= 30.5)
         {
             // init constrained DOF
             rodsVector[i]->zeroConstraints();
@@ -1169,8 +1169,29 @@ void world::updateBoundary()
             }
             // END STEP8 TO REEF KNOT
         }
+
+        else if (currentTime > 30.5 && currentTime <= 31)
+        {
+            // init constrained DOF
+            rodsVector[i]->zeroConstraints();
+            v_dumbviscoForce[i]->isReleasing = true;
+            // STEP8 TO REEF KNOT
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 1) + u * deltaTime, numVertices - 1);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 2) + u * deltaTime, numVertices - 2);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 65) - 2*u * deltaTime, numVertices - 65);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 66) - 2*u * deltaTime, numVertices - 66);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(70) + u * deltaTime, 70);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(71) + u * deltaTime, 71); 
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(1), 1);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(2), 2);
+            for (int j = 105; j < (numVertices - 105); j++)
+            {
+                rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(j), j);
+            }
+            // END STEP8 TO REEF KNOT
+        }
         
-        else if (currentTime > 31 && currentTime <= 33)
+        else if (currentTime > 31 && currentTime <= 32)
         {
             // init constrained DOF
             rodsVector[i]->zeroConstraints();
@@ -1178,8 +1199,8 @@ void world::updateBoundary()
             // STEP8 TO REEF KNOT
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 1), numVertices - 1);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 2), numVertices - 2);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 60) + 0.5*u * deltaTime, numVertices - 60);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 61) + 0.5*u * deltaTime, numVertices - 61 );
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 65) + 0.5*u * deltaTime, numVertices - 65);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 66) + 0.5*u * deltaTime, numVertices - 66 );
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(70) - 0.5*u * deltaTime, 70);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(71) - 0.5*u * deltaTime, 71); 
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(1), 1);
@@ -1192,7 +1213,7 @@ void world::updateBoundary()
         }
 
 
-        else if (currentTime > 33 && currentTime <= 33.5)
+        else if (currentTime > 32 && currentTime <= 33.5)
         {
             // init constrained DOF
             rodsVector[i]->zeroConstraints();
@@ -1202,10 +1223,10 @@ void world::updateBoundary()
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 2), numVertices - 2);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(1), 1);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(2), 2);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 50), numVertices - 50);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 51), numVertices - 51 );
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(64), 64);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(65), 65); 
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 70), numVertices - 70);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 71), numVertices - 71 );
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(75), 75);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(76), 76); 
 
             for (int j = 105; j < (numVertices - 105); j++)
             {
@@ -1214,7 +1235,8 @@ void world::updateBoundary()
             // END STEP8 TO REEF KNOT
         }
 
-        else if (currentTime > 33.5 && currentTime <= 35)
+        
+        else if (currentTime > 33.5 && currentTime <= 34)
         {
             // init constrained DOF
             rodsVector[i]->zeroConstraints();
@@ -1231,6 +1253,26 @@ void world::updateBoundary()
             }
             // END STEP8 TO REEF KNOT
         }
+
+
+        else if (currentTime > 34 && currentTime <= 36)
+        {
+            // init constrained DOF
+            rodsVector[i]->zeroConstraints();
+            v_dumbviscoForce[i]->isReleasing = true;
+            // STEP8 TO REEF KNOT
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 1) + u * deltaTime, numVertices - 1);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 2) + u * deltaTime, numVertices - 2);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(1) - u * deltaTime, 1);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(2) - u * deltaTime, 2);
+
+            for (int j = 105; j < (numVertices - 105); j++)
+            {
+                rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(j), j);
+            }
+            // END STEP8 TO REEF KNOT
+        }
+
     }
 }
 
