@@ -17,6 +17,7 @@ dumbVisco::~dumbVisco()
 {
 	;
 }
+
 void dumbVisco::computeFv()
 {
 	int ind;
@@ -26,7 +27,7 @@ void dumbVisco::computeFv()
 	for (int i = 0; i < rod->ndof; i++)
 	{
 
-		f = (k_dumb_visco * rod->u[i]) * isReleasing;
+		f = (k_dumb_visco * rod->refLen[0] * rod->u[i]) * isReleasing;
 
 		ForceVec(i) = f;
 
@@ -38,7 +39,7 @@ void dumbVisco::computeJv()
 {
 	for (int i = 0; i < rod->ndof; i++)
 	{
-		jac = k_dumb_visco / ((rod->dt));
+		jac = k_dumb_visco * rod->refLen[0] / ((rod->dt));
 		stepper->addJacobian(i, i, jac, rod_idx);
 	}
 }

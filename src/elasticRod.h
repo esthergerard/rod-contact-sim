@@ -30,6 +30,7 @@ class elasticRod
 	void printInfo();
 	void setYoungModulus(double newYoungM);
 	void setFriction(double newMU);
+	void setRadius(double newRadius);
 
 	Vector3d getVertexOld(int k);
 	Vector3d getVelocityOld(int k);

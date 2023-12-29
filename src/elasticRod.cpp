@@ -40,10 +40,18 @@ elasticRod::elasticRod(MatrixXd initialNodes, MatrixXd undeformed,
 
 void elasticRod::setYoungModulus(double newYoungM) {
     youngM = newYoungM;
+	computeElasticStiffness();
 }
 
 void elasticRod::setFriction(double newMU) {
     friction = newMU;
+}
+
+void elasticRod::setRadius(double newRadius) {
+    rodRadius = newRadius;
+	crossSectionalArea = M_PI * rodRadius * rodRadius;
+	setMass();
+	computeElasticStiffness();
 }
 
 void elasticRod::zeroConstraints()

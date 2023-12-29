@@ -25,10 +25,11 @@ elasticStretchingForce::~elasticStretchingForce()
 void elasticStretchingForce::computeFs()
 {
 	ForceVec = VectorXd::Zero(rod->ndof);
-
+	double SUMeps = 0;
 	for (int i = 0; i < rod->ne; i++)
 	{
 		epsX = rod->edgeLen(i) / rod->refLen(i) - 1.0;
+		SUMeps = SUMeps + epsX;
 		f = EA * (rod->tangent).row(i) * epsX;
 		for (int k = 0; k < 3; k++)
 		{
@@ -45,6 +46,7 @@ void elasticStretchingForce::computeFs()
 			stepper->addForce(ind, f[k], rod_idx); // adding elastic force
 		}
 	}
+	// cout << "SUMeps: " << SUMeps << endl;
 }
 
 void elasticStretchingForce::computeJs()
