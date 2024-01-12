@@ -389,7 +389,7 @@ void world::updateBoundary()
             // init constrained DOF
             rodsVector[i]->zeroConstraints();
             v_dumbviscoForce[i]->isReleasing = true;
-            mu = 1;
+            mu = 2.5;
             rodsVector[i]->setFriction(mu);
 
             Vector3d u_offset_x;
@@ -430,8 +430,8 @@ void world::updateBoundary()
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(98), 98);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(99), 99);
             rodsVector[i]->setThetaBoundaryCondition(rodsVector[i]->getTheta(98), 98);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(64) + u * deltaTime, 64);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(65) + u * deltaTime, 65); // Block inside loop
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(70) + u * deltaTime, 70);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(71) + u * deltaTime, 71); // Block inside loop
             for (int j = 105; j < (numVertices - 105); j++)
             {
                 rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(j), j);
@@ -461,14 +461,14 @@ void world::updateBoundary()
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(98), 98);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(99), 99);
             rodsVector[i]->setThetaBoundaryCondition(rodsVector[i]->getTheta(98), 98);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(64) + (0.8 * u + u_back_z) * deltaTime, 64);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(65) + (0.8 * u + u_back_z) * deltaTime, 65); // Block inside loop
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(70) + (0.8 * u + u_back_z) * deltaTime, 70);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(71) + (0.8 * u + u_back_z) * deltaTime, 71); // Block inside loop
             for (int j = 105; j < (numVertices - 105); j++)
             {
                 rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(j), j);
             }
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(1) - u_back_z * deltaTime, 1);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(2) - u_back_z * deltaTime, 2);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(1) + (0.8 * u - u_back_z) * deltaTime, 1);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(2) + (0.8 * u - u_back_z) * deltaTime, 2);
             // END STEP8 TO REEF KNOT
         }
 
@@ -490,8 +490,8 @@ void world::updateBoundary()
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(98), 98);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(97), 97);
             rodsVector[i]->setThetaBoundaryCondition(rodsVector[i]->getTheta(97), 97);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(63) + u/3 * deltaTime, 63);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(64) + u/3 * deltaTime, 64); // Block inside loop
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(70) + u/3 * deltaTime, 70);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(71) + u/3 * deltaTime, 71); // Block inside loop
             for (int j = 104; j < (numVertices - 104); j++)
             {
                 rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(j), j);
@@ -511,8 +511,8 @@ void world::updateBoundary()
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 2), numVertices - 2);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 63) - u * deltaTime, numVertices - 63);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 64) - u * deltaTime, numVertices - 64);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(75) + u * deltaTime, 75);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(76) + u * deltaTime, 76); 
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(70) + u * deltaTime, 70);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(71) + u * deltaTime, 71); 
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(1), 1);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(2), 2);
             for (int j = 104; j < (numVertices - 104); j++)
@@ -534,8 +534,8 @@ void world::updateBoundary()
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(2), 2);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 70), numVertices - 70);
             rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(numVertices - 69), numVertices - 69);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(75), 75);
-            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(74), 74); 
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(70), 70);
+            rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(71), 71); 
 
             for (int j = 104; j < (numVertices - 104); j++)
             {
@@ -567,7 +567,7 @@ void world::updateBoundary()
             // END STEP8 TO REEF KNOT
         }
 
-        else if (currentTime > 4 && currentTime <= 4.5)
+        else if (currentTime > 4 && currentTime <= 6)
         {
             // init constrained DOF
             rodsVector[i]->zeroConstraints();
@@ -586,7 +586,7 @@ void world::updateBoundary()
         }
 
 
-        else if (currentTime > 4.5 && currentTime <= 6.5)
+        else if (currentTime > 6 && currentTime <= 10)
         {
             // init constrained DOF
             rodsVector[i]->zeroConstraints();

@@ -45,11 +45,11 @@ void initGL() {
 	glClearDepth(10.0f);                   // Set background depth to farthest
 		glShadeModel(GL_SMOOTH);   // Enable smooth shading
 	
-    // // for 3d view
-    // glLoadIdentity();
-    // glOrtho(-1.0/3.0f, 1.0/3.0f, -1.0/3.0f, 1.0/3.0f, -1.0, 1.0);
-    // gluLookAt(0.05, 0.05, 0.1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
-    // glPushMatrix();
+    // for 3d view
+    glLoadIdentity();
+    glOrtho(-1.0/3.0f, 1.0/3.0f, -1.0/3.0f, 1.0/3.0f, -1.0, 1.0);
+    gluLookAt(0.05, 0.05, 0.1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
+    glPushMatrix();
 
     // // for (XY) view
     // glMatrixMode(GL_PROJECTION);
@@ -66,13 +66,13 @@ void initGL() {
     // glLoadIdentity();
 	// glRotatef(90.0, 1.0, 0.0, 0.0);
 
-    // for (YZ) view
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(-1.0/3.0f, 1.0/3.0f, -1.0/3.0f, 1.0/3.0f, -1.0, 1.0);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    glRotatef(90.0, 0.0, 1.0, 0.0);
+    // // for (YZ) view
+    // glMatrixMode(GL_PROJECTION);
+    // glLoadIdentity();
+    // glOrtho(-1.0/3.0f, 1.0/3.0f, -1.0/3.0f, 1.0/3.0f, -1.0, 1.0);
+    // glMatrixMode(GL_MODELVIEW);
+    // glLoadIdentity();
+    // glRotatef(90.0, 0.0, 1.0, 0.0);
 
 }
 

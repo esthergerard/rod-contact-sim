@@ -46,7 +46,7 @@ void elasticStretchingForce::computeFs()
 			stepper->addForce(ind, f[k], rod_idx); // adding elastic force
 		}
 	}
-	// cout << "SUMeps: " << SUMeps << endl;
+	// cout << "SUMeps: " << SUMeps/342 << endl;
 }
 
 void elasticStretchingForce::computeJs()
