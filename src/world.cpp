@@ -268,7 +268,7 @@ void world::rodGeometry(int &index_Rod)
 {
     // Define the input file containing the knot config and open it
     // string knot_config = "reef" + std::to_string(index_Rod + 1);
-    string knot_config = "reef_tied"; // handtying initial
+    string knot_config = "reef_tied2"; // handtying initial
     // string knot_config = "step1"; // handtying step1
     // string knot_config = "step2-1"; // handtying step2-1
     ifstream myfile(("knot_configurations/" + knot_config).c_str());
@@ -379,7 +379,7 @@ void world::updateBoundary()
         else if (currentTime > 0.5 && currentTime <= 2.5)
         {
             // init constrained DOF
-            mu = 1;
+            mu = 2.5;
             rodsVector[i]->setFriction(mu);
             rodsVector[i]->zeroConstraints();
             v_dumbviscoForce[i]->isReleasing = true;
