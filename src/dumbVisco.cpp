@@ -28,7 +28,6 @@ void dumbVisco::computeFv()
 		f = (k_visco * rod->refLen[0] * (rod->x[i] - rod->x0[i]) / rod->dt) * isReleasing;
 
 		ForceVec(i) = f;
-		cout << "force: " << f << endl;
 
 		stepper->addForce(i, f, rod_idx);
 
