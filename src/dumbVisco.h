@@ -15,7 +15,6 @@ public:
 
 	VectorXd ForceVec;
 	bool isReleasing;
-	double k_dumb_visco;
 
 private:
 	elasticRod *rod;
@@ -25,6 +24,7 @@ private:
 	double f, jac;
 	int rod_idx;
 	double ind;
+	double k_dumb_visco;
 };
 
 #endif

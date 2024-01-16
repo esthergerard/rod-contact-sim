@@ -7,10 +7,9 @@ dumbVisco::dumbVisco(elasticRod &m_rod, timeStepper &m_stepper, int idx)
 
 	ForceVec = VectorXd::Zero(rod->ndof);
 	rod_idx = idx;
-	isReleasing = false;
+	isReleasing = true;
 
-	double k_dumb_visco;
-	k_dumb_visco = 1;
+	double k_dumb_visco = 1.0;
 }
 
 dumbVisco::~dumbVisco()
@@ -32,6 +31,7 @@ void dumbVisco::computeFv()
 		ForceVec(i) = f;
 
 		stepper->addForce(i, f, rod_idx);
+
 	}
 }
 
