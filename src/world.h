@@ -100,6 +100,8 @@ private:
     double characteristicForce;
     double forceTol;
 
+    double k_dumb_visco;
+
     // Geometry
     MatrixXd vertices;
     double currentTime;

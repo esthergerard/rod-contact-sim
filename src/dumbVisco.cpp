@@ -1,6 +1,6 @@
 #include "dumbVisco.h"
 
-dumbVisco::dumbVisco(elasticRod &m_rod, timeStepper &m_stepper, int idx)
+dumbVisco::dumbVisco(elasticRod &m_rod, timeStepper &m_stepper, int idx, double k_dumb_visco)
 {
 	rod = &m_rod;
 	stepper = &m_stepper;
@@ -8,8 +8,7 @@ dumbVisco::dumbVisco(elasticRod &m_rod, timeStepper &m_stepper, int idx)
 	ForceVec = VectorXd::Zero(rod->ndof);
 	rod_idx = idx;
 	isReleasing = true;
-
-	double k_dumb_visco = 1.0;
+	k_visco = k_dumb_visco; // defined in world.cpp
 }
 
 dumbVisco::~dumbVisco()
@@ -26,9 +25,10 @@ void dumbVisco::computeFv()
 	for (int i = 0; i < rod->ndof; i++)
 	{
 
-		f = (k_dumb_visco * rod->refLen[0] * rod->u[i]) * isReleasing;
+		f = (k_visco * rod->refLen[0] * (rod->x[i] - rod->x0[i]) / rod->dt) * isReleasing;
 
 		ForceVec(i) = f;
+		cout << "force: " << f << endl;
 
 		stepper->addForce(i, f, rod_idx);
 
@@ -39,7 +39,7 @@ void dumbVisco::computeJv()
 {
 	for (int i = 0; i < rod->ndof; i++)
 	{
-		jac = k_dumb_visco * rod->refLen[0] / ((rod->dt));
+		jac = k_visco * rod->refLen[0] / ((rod->dt)) * isReleasing;
 		stepper->addJacobian(i, i, jac, rod_idx);
 	}
 }

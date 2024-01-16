@@ -44,6 +44,8 @@ world::world(setInput &m_inputData)
     wait_time = 1;    // get time of waiting
     pull_speed = 0.06;
 
+    k_dumb_visco = 0.2; // dumb viscosity
+
     ////////////////
     // rod length and numVertices defined in function world::rodGeometry()
     //  double nTurn = axisLengthInput / helixPitch;
@@ -246,7 +248,7 @@ void world::setRodStepper()
         v_twistingForce.push_back(new elasticTwistingForce(*rodsVector[i], *stepper, i));
         v_inertialForce.push_back(new inertialForce(*rodsVector[i], *stepper, i));
         v_gravityForce.push_back(new externalGravityForce(*rodsVector[i], *stepper, gVector, i));
-        v_dumbviscoForce.push_back(new dumbVisco(*rodsVector[i], *stepper, i));
+        v_dumbviscoForce.push_back(new dumbVisco(*rodsVector[i], *stepper, i, k_dumb_visco));
     }
     // // define RSS model
     // m_RegularizedStokeslet = new RegularizedStokeslet(rodsVector, *stepper, viscosity, epsilon);

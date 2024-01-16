@@ -8,7 +8,7 @@
 class dumbVisco
 {
 public:
-	dumbVisco(elasticRod &m_rod, timeStepper &m_stepper, int idx);
+	dumbVisco(elasticRod &m_rod, timeStepper &m_stepper, int idx, double k_dumb_visco);
 	~dumbVisco();
 	void computeFv();
 	void computeJv();
@@ -24,7 +24,7 @@ private:
 	double f, jac;
 	int rod_idx;
 	double ind;
-	double k_dumb_visco;
+	double k_visco;
 };
 
 #endif
