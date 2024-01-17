@@ -44,7 +44,7 @@ world::world(setInput &m_inputData)
     wait_time = 1;    // get time of waiting
     pull_speed = 0.06;
 
-    k_dumb_visco = 0.2; // dumb viscosity
+    k_dumb_visco = 0; // dumb viscosity
 
     ////////////////
     // rod length and numVertices defined in function world::rodGeometry()
@@ -153,9 +153,13 @@ void world::CoutData(ofstream &simfile, ofstream &configfile, double &time_taken
 
     // external forces (should be equal to the propulisve force)
     Vector3d Fp(0, 0, 0);
+    Vector3d Fplast(0,0,0);
+    Vector3d Fpfirst(0,0,0);
     for (int n = 0; n < rodsVector.size(); n++)
     {
-        Fp = Fp + stepper->force.segment(rodsVector[n]->ndof * n, 3) + stepper->force.segment(rodsVector[n]->ndof * n + 4, 3);
+        Fp = Fp - stepper->force.segment(rodsVector[n]->ndof * (n+1) - 8, 3) - stepper->force.segment(rodsVector[n]->ndof * (n+1) - 4, 3) + stepper->force.segment(rodsVector[n]->ndof * n + 4, 3) + stepper->force.segment(rodsVector[n]->ndof * n + 1, 3);
+        Fplast = Fplast - stepper->force.segment(rodsVector[n]->ndof * (n+1) - 8, 3) - stepper->force.segment(rodsVector[n]->ndof * (n+1) - 4, 3);
+        Fpfirst = Fpfirst + stepper->force.segment(rodsVector[n]->ndof * n + 4, 3) + stepper->force.segment(rodsVector[n]->ndof * n + 1, 3);
     }
 
     // // hydrodynamic force
@@ -177,7 +181,7 @@ void world::CoutData(ofstream &simfile, ofstream &configfile, double &time_taken
         }
     }
 
-    simfile << currentTime << " " << iter << " " << m_collisionDetector->num_collisions << " " << time_taken << " " << m_collisionDetector->min_dist << " " << contact_stiffness << " " << dis << " " << Fp(0) << " " << Fp(1) << " " << Fp(2) << " " << inertiaF(0) << " " << inertiaF(1) << " " << inertiaF(2) << " "
+    simfile << currentTime << " " << iter << " " << m_collisionDetector->num_collisions << " " << time_taken << " " << m_collisionDetector->min_dist << " " << contact_stiffness << " " << dis << " " << Fp(0) << " " << Fp(1) << " " << Fp(2) << " " << Fpfirst(0) << " " << Fpfirst(1) << " " << Fpfirst(2) << " " << Fplast(0) << " " << Fplast(1) << " " << Fplast(2) << " " << inertiaF(0) << " " << inertiaF(1) << " " << inertiaF(2) << " "
             << normf << " "
             << normf0 << endl;
 
