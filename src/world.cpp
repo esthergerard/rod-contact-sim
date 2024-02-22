@@ -42,9 +42,9 @@ world::world(setInput &m_inputData)
     pull_time = 10;   // get time of pulling
     release_time = 0; // get time of loosening
     wait_time = 1;    // get time of waiting
-    pull_speed = 0.06;
+    pull_speed = 0.5e-2;
 
-    k_dumb_visco = 0; // dumb viscosity
+    k_dumb_visco = 1; // dumb viscosity
 
     ////////////////
     // rod length and numVertices defined in function world::rodGeometry()
@@ -181,12 +181,34 @@ void world::CoutData(ofstream &simfile, ofstream &configfile, double &time_taken
         }
     }
 
+    Vector3d stretchingForce(0, 0, 0);
+    for (int n = 0; n < numRod; n++)
+    {
+        for (int i = 0; i < rodsVector[n]->nv; i++)
+        {
+            stretchingForce(0) = stretchingForce(0) + v_stretchForce[n]->ForceVec[4 * i];
+            stretchingForce(1) = stretchingForce(1) + v_stretchForce[n]->ForceVec[4 * i + 1];
+            stretchingForce(2) = stretchingForce(2) + v_stretchForce[n]->ForceVec[4 * i + 2];
+        }
+    }
+
+    Vector3d bendingForce(0, 0, 0);
+    for (int n = 0; n < numRod; n++)
+    {
+        for (int i = 0; i < rodsVector[n]->nv; i++)
+        {
+            bendingForce(0) = bendingForce(0) + v_bendingForce[n]->ForceVec[4 * i];
+            bendingForce(1) = bendingForce(1) + v_bendingForce[n]->ForceVec[4 * i + 1];
+            bendingForce(2) = bendingForce(2) + v_bendingForce[n]->ForceVec[4 * i + 2];
+        }
+    }
+
     simfile << currentTime << " " << iter << " " << m_collisionDetector->num_collisions << " " << time_taken << " " << m_collisionDetector->min_dist << " " << contact_stiffness << " " << dis << " " << Fp(0) << " " << Fp(1) << " " << Fp(2) << " " << Fpfirst(0) << " " << Fpfirst(1) << " " << Fpfirst(2) << " " << Fplast(0) << " " << Fplast(1) << " " << Fplast(2) << " " << inertiaF(0) << " " << inertiaF(1) << " " << inertiaF(2) << " "
-            << normf << " "
+            << stretchingForce(0) << " " << stretchingForce(1) << " " << stretchingForce(2) << " " << bendingForce(0) << " " << bendingForce(1) << " " << bendingForce(2) << " " << normf << " "
             << normf0 << endl;
 
     // Record only every second 0.1 seconds so files don't get humongous
-    int rate = int(0.1 / deltaTime);
+    int rate = int(1 / deltaTime);
     if (timeStep % rate == 0)
     {
         for (int n = 0; n < numRod; n++)
@@ -382,11 +404,9 @@ void world::updateBoundary()
         }
 
 
-        else if (currentTime > 0.5 && currentTime <= 2.5)
+        else if (currentTime > 0.5 && currentTime <= 1000)
         {
             // init constrained DOF
-            mu = 2.5;
-            rodsVector[i]->setFriction(mu);
             rodsVector[i]->zeroConstraints();
             v_dumbviscoForce[i]->isReleasing = true;
             // STEP8 TO REEF KNOT
