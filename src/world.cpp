@@ -349,6 +349,7 @@ void world::rodBoundaryCondition(int n)
 
 void world::updateBoundary()
 {
+
     for (int i = 0; i < numRod; i++)
     {
         Vector3d u;
@@ -1271,6 +1272,26 @@ void world::updateBoundary()
                 rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(j), j);
             }
             // END STEP8 TO REEF KNOT
+
+            if (currentTime == 35.9)
+            {
+                int idx1, idx2, idx3, idx4;
+                ConstraintType constraint_type;
+                ContactPiecewise contact_type;
+
+                for (int i = 0; i < m_collisionDetector->num_collisions; i++) {
+                    idx1 = m_collisionDetector->contact_ids(i, 0);
+                    idx2 = m_collisionDetector->contact_ids(i, 1);
+                    idx3 = m_collisionDetector->contact_ids(i, 2);
+                    idx4 = m_collisionDetector->contact_ids(i, 3);
+                    constraint_type = static_cast<ConstraintType>(m_collisionDetector->contact_ids(i, 4));
+                    contact_type = static_cast<ContactPiecewise>(m_collisionDetector->contact_ids(i, 5));
+                    if (contact_type == ContactPiecewise::Normal)
+                    {
+                        cout << "List of edges in contact" << idx1 << " " << idx2 << " " << idx3 << " " << idx4 << " ; constraint type " << constraint_type << endl;
+                    }
+                }
+            }
         }
 
     }
