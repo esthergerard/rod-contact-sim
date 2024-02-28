@@ -524,6 +524,26 @@ void world::updateBoundary()
 
         else if (currentTime > 3 && currentTime <= 3.5)
         {
+            if (currentTime > 3.498)
+            {   
+                int idx1, idx2, idx3, idx4;
+                ConstraintType constraint_type;
+                ContactPiecewise contact_type;
+
+                for (int i = 0; i < m_collisionDetector->num_collisions; i++) {
+                    idx1 = m_collisionDetector->contact_ids(i, 0);
+                    idx2 = m_collisionDetector->contact_ids(i, 1);
+                    idx3 = m_collisionDetector->contact_ids(i, 2);
+                    idx4 = m_collisionDetector->contact_ids(i, 3);
+                    constraint_type = static_cast<ConstraintType>(m_collisionDetector->contact_ids(i, 4));
+                    contact_type = static_cast<ContactPiecewise>(m_collisionDetector->contact_ids(i, 5));
+                    // if (contact_type == ContactPiecewise::Penetrated)
+                    // {
+                    //     
+                    cout << "List of edges in contact" << idx1 << " " << idx2 << " " << idx3 << " " << idx4 << " ; constraint type " << constraint_type << endl;
+                    // }
+                }
+            }
             // init constrained DOF
             rodsVector[i]->zeroConstraints();
             v_dumbviscoForce[i]->isReleasing = true;
@@ -542,6 +562,7 @@ void world::updateBoundary()
                 rodsVector[i]->setVertexBoundaryCondition(rodsVector[i]->getVertex(j), j);
             }
             // END STEP8 TO REEF KNOT
+            
         }
 
         
