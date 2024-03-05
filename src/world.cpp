@@ -208,7 +208,7 @@ void world::CoutData(ofstream &simfile, ofstream &configfile, double &time_taken
             << normf0 << endl;
 
     // Record only every second 0.1 seconds so files don't get humongous
-    int rate = int(1 / deltaTime);
+    int rate = int(0.01 / deltaTime);
     if (timeStep % rate == 0)
     {
         for (int n = 0; n < numRod; n++)
@@ -296,8 +296,8 @@ void world::rodGeometry(int &index_Rod)
 {
     // Define the input file containing the knot config and open it
     // string knot_config = "reef" + std::to_string(index_Rod + 1);
-    string knot_config = "reef_tied2"; // handtying initial
-    // string knot_config = "step1"; // handtying step1
+    // string knot_config = "reef_tied2"; // handtying initial
+    string knot_config = "tied-R1"; // handtying step1
     // string knot_config = "step2-1"; // handtying step2-1
     ifstream myfile(("knot_configurations/" + knot_config).c_str());
     if (!myfile.is_open())
