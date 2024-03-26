@@ -1,4 +1,1 @@
-cd build
-cmake ..
-make -j4
-./run.sh
+cd build && cmake .. && make -j4 && cd .. && ./run.sh
