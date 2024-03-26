@@ -5,10 +5,10 @@
  * This code is based on previous iterations.
  * */
 
-//This line is for mac
-//#include <GLUT/glut.h>
+// This line is for mac
+// #include <GLUT/glut.h>
 
-//This is for linux
+// This is for linux
 #include <GL/glut.h>
 
 #include <iostream>
@@ -20,7 +20,6 @@
 #include "world.h"
 #include "setInput.h"
 
-
 world myWorld;
 int NPTS;
 ofstream simfile;
@@ -31,40 +30,42 @@ clock_t start;
 clock_t finish;
 double time_taken;
 
-static void Key(unsigned char key, int x, int y) {
-    switch (key) // ESCAPE to quit
+static void Key(unsigned char key, int x, int y)
 {
-        case 27:
-            exit(0);
-                }
+    switch (key) // ESCAPE to quit
+    {
+    case 27:
+        exit(0);
+    }
 }
 
 /* Initialize OpenGL Graphics */
-void initGL() {
-	glClearColor(0.7f, 0.7f, 0.7f, 0.0f); // Set background color to black and opaque
-	glClearDepth(10.0f);                   // Set background depth to farthest
-		glShadeModel(GL_SMOOTH);   // Enable smooth shading
-	
+void initGL()
+{
+    glClearColor(0.7f, 0.7f, 0.7f, 0.0f); // Set background color to black and opaque
+    glClearDepth(10.0f);                  // Set background depth to farthest
+    glShadeModel(GL_SMOOTH);              // Enable smooth shading
+
     // for 3d view
     glLoadIdentity();
-    glOrtho(-1.0/3.0f, 1.0/3.0f, -1.0/3.0f, 1.0/3.0f, -1.0, 1.0);
+    glOrtho(-1.0 / 3.0f, 1.0 / 3.0f, -1.0 / 3.0f, 1.0 / 3.0f, -1.0, 1.0);
     gluLookAt(0.05, 0.05, 0.1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
     glPushMatrix();
 
     // // for (XY) view
     // glMatrixMode(GL_PROJECTION);
-	// glLoadIdentity();
-	// glOrtho(-1.0/3.0f, 1.0/3.0f, -1.0/3.0f, 1.0/3.0f, -1.0, 1.0);
+    // glLoadIdentity();
+    // glOrtho(-1.0/3.0f, 1.0/3.0f, -1.0/3.0f, 1.0/3.0f, -1.0, 1.0);
     // glMatrixMode(GL_MODELVIEW);
-    // glLoadIdentity();     
+    // glLoadIdentity();
 
     // // for (XZ) view
     // glMatrixMode(GL_PROJECTION);
     // glLoadIdentity();
     // glOrtho(-1.0/3.0f, 1.0/3.0f, -1.0/3.0f, 1.0/3.0f, -1.0, 1.0);
-	// glMatrixMode(GL_MODELVIEW);
+    // glMatrixMode(GL_MODELVIEW);
     // glLoadIdentity();
-	// glRotatef(90.0, 1.0, 0.0, 0.0);
+    // glRotatef(90.0, 1.0, 0.0, 0.0);
 
     // // for (YZ) view
     // glMatrixMode(GL_PROJECTION);
@@ -73,47 +74,50 @@ void initGL() {
     // glMatrixMode(GL_MODELVIEW);
     // glLoadIdentity();
     // glRotatef(90.0, 0.0, 1.0, 0.0);
-
 }
 
-void display(void) {
-    while (myWorld.simulationRunning() > 0) {
+void display(void)
+{
+    while (myWorld.simulationRunning() > 0)
+    {
         //  Clear screen and Z-buffer
         glClear(GL_COLOR_BUFFER_BIT);
 
         // draw axis
         double axisLen = 1;
         glLineWidth(0.5);
-        
+
         glBegin(GL_LINES);
-            glColor3f(1.0, 0.0, 0.0);
-            glVertex3f(0.0, 0.0, 0.0);
-            glVertex3f(axisLen, 0.0, 0.0);
+        glColor3f(1.0, 0.0, 0.0);
+        glVertex3f(0.0, 0.0, 0.0);
+        glVertex3f(axisLen, 0.0, 0.0);
 
-            glColor3f(0.0, 1.0, 0.0);
-            glVertex3f(0.0, 0.0, 0.0);
-            glVertex3f(0.0, axisLen, 0.0);
+        glColor3f(0.0, 1.0, 0.0);
+        glVertex3f(0.0, 0.0, 0.0);
+        glVertex3f(0.0, axisLen, 0.0);
 
-            glColor3f(0.0, 0.0, 1.0);
-            glVertex3f(0.0, 0.0, 0.0);
-            glVertex3f(0.0, 0.0, axisLen);
+        glColor3f(0.0, 0.0, 1.0);
+        glVertex3f(0.0, 0.0, 0.0);
+        glVertex3f(0.0, 0.0, axisLen);
         glEnd();
-        
-        //draw a line
+
+        // draw a line
         glColor3f(0.1, 0.1, 0.1);
         glLineWidth(3.0);
-        
-        for (int i = 0; i < rods; i++) {
+
+        for (int i = 0; i < rods; i++)
+        {
             glBegin(GL_LINES);
-            for (int j = 0; j < NPTS - 1; j++) {
+            for (int j = 0; j < NPTS - 1; j++)
+            {
                 glVertex3f(myWorld.getScaledCoordinate(i, 4 * j), myWorld.getScaledCoordinate(i, 4 * j + 1),
-                            myWorld.getScaledCoordinate(i, 4 * j + 2));
+                           myWorld.getScaledCoordinate(i, 4 * j + 2));
                 glVertex3f(myWorld.getScaledCoordinate(i, 4 * (j + 1)), myWorld.getScaledCoordinate(i, 4 * (j + 1) + 1),
-                            myWorld.getScaledCoordinate(i, 4 * (j + 1) + 2));
+                           myWorld.getScaledCoordinate(i, 4 * (j + 1) + 2));
             }
             glEnd();
         }
-        
+
         glFlush();
 
         // Update step
@@ -123,10 +127,11 @@ void display(void) {
         time_taken = double(finish - start) / double(CLOCKS_PER_SEC);
         myWorld.CoutData(simfile, configfile, time_taken);
     }
-	exit(1);
+    exit(1);
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     setInput inputData;
     inputData = setInput();
     inputData.LoadOptions(argv[1]);
@@ -135,7 +140,6 @@ int main(int argc, char *argv[]) {
     myWorld = world(inputData);
     myWorld.setRodStepper();
     rods = inputData.GetIntOpt("numFlagella");
-
 
     myWorld.OpenFile(simfile, configfile, "node_data");
     bool render = myWorld.isRender();
@@ -152,8 +156,11 @@ int main(int argc, char *argv[]) {
         glutKeyboardFunc(Key);
         glutDisplayFunc(display);
         glutMainLoop();
-    } else {
-        while (myWorld.simulationRunning() > 0) {
+    }
+    else
+    {
+        while (myWorld.simulationRunning() > 0)
+        {
             start = clock();
             myWorld.updateTimeStep(); // update time step
             finish = clock();
